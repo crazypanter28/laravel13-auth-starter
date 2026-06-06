@@ -6,6 +6,31 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.2.0] - 2026-06-06
+
+### Added
+- OAuth login with GitHub via Laravel Socialite
+- OAuth login with Google via Laravel Socialite
+- `SocialiteController` with provider validation
+- Migration for `provider`, `provider_id`, `provider_token` columns on users table
+- OAuth buttons on login and register views
+- `.env.example` variables for GitHub and Google credentials
+- Graceful fallback for users without public name on GitHub (uses nickname)
+
+## OAuth local development note
+
+Google OAuth does not accept `.test` domains. For local testing use:
+
+```env
+GOOGLE_REDIRECT_URI=http://127.0.0.1:80/auth/google/callback
+```
+
+Or use [ngrok](https://ngrok.com) to expose your local app with a public domain.
+
+GitHub OAuth works fine with `.test` domains.
+
+---
+
 ## [v0.0.1] - 2026-06-06
 
 ### Added
