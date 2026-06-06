@@ -84,6 +84,24 @@ php artisan migrate:fresh
 
 ---
 
+## Testing email in local development
+
+By default this starter uses the `log` driver for mail — no email server needed.
+
+In your `.env` make sure you have:
+
+```env
+MAIL_MAILER=log
+```
+
+After requesting a password reset, find the link in:
+
+storage/logs/laravel.log
+
+Search for `reset-password` — copy the full URL and paste it in your browser.
+
+For production change `MAIL_MAILER` to `smtp`, `mailgun`, `ses`, or any driver Laravel supports.
+
 ## Contributing
 
 PRs and issues are welcome. Please open an issue first to discuss what you'd like to change.
