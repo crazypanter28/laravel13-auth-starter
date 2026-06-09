@@ -6,6 +6,29 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.4.0] - 2026-06-08
+
+### Added
+- Two-factor authentication (TOTP) via Laravel Fortify
+- QR code setup with Google Authenticator / Authy
+- Recovery codes generation and display
+- Password confirmation before enabling 2FA
+- `two-factor-challenge` view for TOTP and recovery code login
+- `confirm-password` view
+- Wizard installer upgraded — now asks:
+  1. CSS framework (Tailwind, Bootstrap, None)
+  2. OAuth (GitHub and Google)
+  3. Two-Factor Authentication
+- OAuth buttons hidden automatically when OAuth is disabled (`Route::has` check)
+- 2FA section hidden automatically when 2FA is disabled (Fortify feature check)
+- `stubs/config/fortify.with-2fa.php` and `fortify.without-2fa.php` for clean config switching
+
+### Changed
+- `auth:install` command rewritten as full wizard
+- `.env.example` now updated automatically based on wizard choices
+
+---
+
 ## [v0.3.0] - 2026-06-08
 
 ### Added

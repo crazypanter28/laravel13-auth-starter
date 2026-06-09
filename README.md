@@ -71,6 +71,22 @@ Options:
 
 You can switch frameworks anytime by running the command again.
 
+## Wizard installer
+
+The `auth:install` command is a full setup wizard:
+
+```bash
+php artisan auth:install
+```
+
+It will ask you:
+
+1. **CSS framework** — Tailwind CSS, Bootstrap, or None
+2. **OAuth** — Enable GitHub and Google login
+3. **2FA** — Enable Two-Factor Authentication (TOTP)
+
+Everything is configured automatically based on your choices.
+
 ## Switching to MySQL
 
 In your `.env` file, replace:
