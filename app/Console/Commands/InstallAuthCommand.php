@@ -9,44 +9,62 @@ class InstallAuthCommand extends Command
 {
     protected $signature = 'auth:install';
 
-    protected $description = 'Install the authentication views with your preferred CSS framework';
+    protected $description = 'Install the authentication views and configure your preferred options';
 
     public function handle(): void
     {
+        $this->info('');
+        $this->info('Welcome to laravel13-auth-starter installer!');
+        $this->info('');
+
+        // Paso 1 — CSS Framework
         $framework = $this->choice(
-            'Which CSS framework would you like to use?',
+            '1. Which CSS framework would you like to use?',
             ['Tailwind CSS', 'Bootstrap', 'None (plain HTML)'],
             0
         );
 
-        $this->info("Installing auth views with {$framework}...");
+        // Paso 2 — OAuth
+        $oauth = $this->confirm('2. Do you want to enable OAuth (GitHub and Google)?', true);
 
+        // Paso 3 — 2FA
+        $twoFactor = $this->confirm('3. Do you want to enable Two-Factor Authentication (2FA)?', true);
+
+        $this->info('');
+        $this->info('Installing...');
+        $this->info('');
+
+        // Instalar CSS framework
         match ($framework) {
             'Tailwind CSS'      => $this->installTailwind(),
             'Bootstrap'         => $this->installBootstrap(),
             'None (plain HTML)' => $this->installNone(),
         };
 
-        // Limpiar build anterior
-        $this->newLine();
-        $this->line('  Cleaning previous build...');
-        File::deleteDirectory(public_path('build'));
-        $this->line('  ✓ Previous build cleaned');
+        // Configurar OAuth
+        $this->configureOAuth($oauth);
 
-        // Build assets automáticamente
-        $this->line('  Building assets...');
-        exec('npm install');
-        exec('npm run build');
-        $this->line('  ✓ Assets built');
+        // Configurar 2FA
+        $this->configureTwoFactor($twoFactor);
 
-        $this->newLine();
-        $this->info('✅ Auth views installed successfully!');
-        $this->newLine();
-        $this->warn('⚠  If styles did not change, run manually:');
+        // Actualizar .env.example
+        $this->updateEnvExample($oauth);
+
+        $this->info('');
+        $this->info('✅ Installation complete!');
+        $this->info('');
+
+        // Resumen de configuración
+        $this->line('Configuration summary:');
+        $this->line('  CSS Framework : ' . $framework);
+        $this->line('  OAuth         : ' . ($oauth ? 'enabled' : 'disabled'));
+        $this->line('  2FA           : ' . ($twoFactor ? 'enabled' : 'disabled'));
+        $this->info('');
+        $this->warn('⚠  Run to apply styles:');
         $this->line('     npm run build');
-        $this->newLine();
-        $this->line('Next steps:');
-        $this->line('  - Run: php artisan serve');
+        $this->info('');
+        $this->line('Then:');
+        $this->line('  - php artisan serve');
         $this->line('  - Open: http://localhost:8000');
     }
 
@@ -92,6 +110,63 @@ class InstallAuthCommand extends Command
         $this->line('  ✓ Plain HTML views copied');
     }
 
+    private function configureOAuth(bool $enabled): void
+    {
+        $routesPath = base_path('routes/web.php');
+        $content = File::get($routesPath);
+
+        if ($enabled) {
+            // Asegurarse que las rutas existen
+            if (!str_contains($content, 'socialite.redirect')) {
+                $oauthRoutes = "\n// OAuth Socialite\n" .
+                    "Route::get('/auth/{provider}/redirect', [App\Http\Controllers\Auth\SocialiteController::class, 'redirect'])\n" .
+                    "    ->name('socialite.redirect');\n\n" .
+                    "Route::get('/auth/{provider}/callback', [App\Http\Controllers\Auth\SocialiteController::class, 'callback'])\n" .
+                    "    ->name('socialite.callback');\n";
+
+                File::append($routesPath, $oauthRoutes);
+            }
+            $this->line('  ✓ OAuth routes enabled');
+        } else {
+            // Remover rutas de OAuth si existen
+            $content = preg_replace('/\n\/\/ OAuth Socialite.*?->name\(\'socialite\.callback\'\);\n/s', '', $content);
+            File::put($routesPath, $content);
+            $this->line('  ✓ OAuth routes disabled');
+        }
+    }
+
+    private function configureTwoFactor(bool $enabled): void
+    {
+        $stub = $enabled ? 'with-2fa' : 'without-2fa';
+
+        File::copy(
+            base_path("stubs/config/fortify.{$stub}.php"),
+            config_path('fortify.php')
+        );
+
+        $this->line('  ✓ Two-factor authentication ' . ($enabled ? 'enabled' : 'disabled'));
+    }
+
+    private function updateEnvExample(bool $oauth): void
+    {
+        $envPath = base_path('.env.example');
+        $content = File::get($envPath);
+
+        $oauthBlock = "\n# GitHub OAuth\nGITHUB_CLIENT_ID=\nGITHUB_CLIENT_SECRET=\nGITHUB_REDIRECT_URI=http://localhost/auth/github/callback\n\n# Google OAuth\nGOOGLE_CLIENT_ID=\nGOOGLE_CLIENT_SECRET=\nGOOGLE_REDIRECT_URI=http://localhost/auth/google/callback\n";
+
+        if ($oauth) {
+            if (!str_contains($content, 'GITHUB_CLIENT_ID')) {
+                File::append($envPath, $oauthBlock);
+            }
+            $this->line('  ✓ OAuth variables added to .env.example');
+        } else {
+            // Remover variables de OAuth
+            $content = preg_replace('/\n# GitHub OAuth.*?GOOGLE_REDIRECT_URI=.*?\n/s', '', $content);
+            File::put($envPath, $content);
+            $this->line('  ✓ OAuth variables removed from .env.example');
+        }
+    }
+
     private function copyStubs(string $framework): void
     {
         $stubPath = base_path("stubs/auth/{$framework}");
@@ -106,6 +181,7 @@ class InstallAuthCommand extends Command
             );
         }
 
+        // Copiar layout
         File::copy(
             base_path("stubs/auth/{$framework}/layouts/guest.blade.php"),
             resource_path('views/components/layouts/guest.blade.php')

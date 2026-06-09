@@ -1,11 +1,9 @@
 <x-layouts.guest>
 
-    {{-- Session status --}}
     @if (session('status'))
         <div>{{ session('status') }}</div>
     @endif
 
-    {{-- Validation errors --}}
     @if ($errors->any())
         <ul>
             @foreach ($errors->all() as $error)
@@ -19,20 +17,12 @@
 
         <div>
             <label for="email">Email</label>
-            <input id="email"
-                   type="email"
-                   name="email"
-                   value="{{ old('email') }}"
-                   required
-                   autofocus>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
         </div>
 
         <div>
             <label for="password">Contraseña</label>
-            <input id="password"
-                   type="password"
-                   name="password"
-                   required>
+            <input id="password" type="password" name="password" required>
         </div>
 
         <div>
@@ -40,7 +30,6 @@
                 <input type="checkbox" name="remember">
                 Recordarme
             </label>
-
             @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
             @endif
@@ -55,12 +44,13 @@
 
     </form>
 
+    @if (Route::has('socialite.redirect'))
     <hr>
     <p>o continúa con</p>
-
     <div>
         <a href="{{ route('socialite.redirect', 'github') }}">GitHub</a>
         <a href="{{ route('socialite.redirect', 'google') }}">Google</a>
     </div>
+    @endif
 
 </x-layouts.guest>

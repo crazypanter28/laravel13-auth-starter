@@ -14,64 +14,35 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        {{-- Name --}}
         <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-                Nombre
-            </label>
-            <input id="name"
-                   type="text"
-                   name="name"
-                   value="{{ old('name') }}"
-                   required
-                   autofocus
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        {{-- Email --}}
         <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-                Email
-            </label>
-            <input id="email"
-                   type="email"
-                   name="email"
-                   value="{{ old('email') }}"
-                   required
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required
                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        {{-- Password --}}
         <div class="mb-4">
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
-                Contraseña
-            </label>
-            <input id="password"
-                   type="password"
-                   name="password"
-                   required
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+            <input id="password" type="password" name="password" required
                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        {{-- Confirm Password --}}
         <div class="mb-6">
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">
-                Confirmar contraseña
-            </label>
-            <input id="password_confirmation"
-                   type="password"
-                   name="password_confirmation"
-                   required
+            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirmar contraseña</label>
+            <input id="password_confirmation" type="password" name="password_confirmation" required
                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        {{-- Submit --}}
         <button type="submit"
                 class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-indigo-700 transition">
             Crear cuenta
         </button>
 
-        {{-- Login link --}}
         <p class="mt-4 text-center text-sm text-gray-600">
             ¿Ya tienes cuenta?
             <a href="{{ route('login') }}" class="text-indigo-600 hover:underline">Inicia sesión</a>
@@ -79,14 +50,12 @@
 
     </form>
 
-    {{-- Divider --}}
+    @if (Route::has('socialite.redirect'))
     <div class="flex items-center my-6">
         <div class="flex-1 border-t border-gray-300"></div>
         <span class="px-3 text-sm text-gray-500">o continúa con</span>
         <div class="flex-1 border-t border-gray-300"></div>
     </div>
-
-    {{-- OAuth buttons --}}
     <div class="flex flex-col gap-3">
         <a href="{{ route('socialite.redirect', 'github') }}"
            class="flex items-center justify-center gap-2 w-full border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
@@ -95,7 +64,6 @@
             </svg>
             GitHub
         </a>
-
         <a href="{{ route('socialite.redirect', 'google') }}"
            class="flex items-center justify-center gap-2 w-full border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
             <svg class="w-5 h-5" viewBox="0 0 24 24">
@@ -107,5 +75,6 @@
             Google
         </a>
     </div>
+    @endif
 
 </x-layouts.guest>

@@ -2,11 +2,13 @@
 
     {{-- Validation errors --}}
     @if ($errors->any())
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        <div class="mb-4 text-sm text-red-600">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <form method="POST" action="{{ route('password.update') }}">
@@ -14,33 +16,49 @@
 
         <input type="hidden" name="token" value="{{ $token }}">
 
-        <div>
-            <label for="email">Email</label>
+        {{-- Email --}}
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                Email
+            </label>
             <input id="email"
                    type="email"
                    name="email"
                    value="{{ old('email', request()->email) }}"
                    required
-                   autofocus>
+                   autofocus
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        <div>
-            <label for="password">Nueva contraseña</label>
+        {{-- Password --}}
+        <div class="mb-4">
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
+                Nueva contraseña
+            </label>
             <input id="password"
                    type="password"
                    name="password"
-                   required>
+                   required
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        <div>
-            <label for="password_confirmation">Confirmar contraseña</label>
+        {{-- Confirm Password --}}
+        <div class="mb-6">
+            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">
+                Confirmar contraseña
+            </label>
             <input id="password_confirmation"
                    type="password"
                    name="password_confirmation"
-                   required>
+                   required
+                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        <button type="submit">Restablecer contraseña</button>
+        {{-- Submit --}}
+        <button type="submit"
+                class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-indigo-700 transition">
+            Restablecer contraseña
+        </button>
 
     </form>
 
