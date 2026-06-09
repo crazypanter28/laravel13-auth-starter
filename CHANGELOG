@@ -6,6 +6,21 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.3.0] - 2026-06-08
+
+### Added
+- `php artisan auth:install` command — interactive CSS framework selector
+- Tailwind CSS stubs (login, register, forgot-password, reset-password, layout)
+- Bootstrap stubs (login, register, forgot-password, reset-password, layout)
+- None stubs — plain HTML for custom CSS frameworks
+- Auto build assets after framework selection
+- Warning message to run `npm run build` if styles don't apply
+
+### Notes
+- Stubs are kept in `stubs/auth/` and are never deleted — allows switching frameworks anytime
+
+---
+
 ## [v0.2.0] - 2026-06-06
 
 ### Added

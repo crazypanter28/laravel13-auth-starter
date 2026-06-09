@@ -56,6 +56,20 @@ npm run dev
 Open http://localhost:8000 in your browser.
 
 ---
+## Choose your CSS framework
+
+After cloning, run the install command and choose your preferred framework:
+
+```bash
+php artisan auth:install
+```
+
+Options:
+- **Tailwind CSS** — default, included out of the box
+- **Bootstrap** — installs Bootstrap 5 automatically
+- **None** — plain HTML, bring your own styles
+
+You can switch frameworks anytime by running the command again.
 
 ## Switching to MySQL
 
