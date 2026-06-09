@@ -10,16 +10,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body>
+<body class="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
 
-    <div>
+    <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-md rounded-lg">
+
         {{-- Logo --}}
-        <div>
-            <a href="/">{{ config('app.name', 'Laravel') }}</a>
+        <div class="flex justify-center mb-6">
+            <a href="/" class="text-2xl font-bold text-gray-800">
+                {{ config('app.name', 'Laravel') }}
+            </a>
         </div>
 
         {{-- Slot principal --}}
         {{ $slot }}
+
     </div>
 
     @livewireScripts
