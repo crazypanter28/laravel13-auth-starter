@@ -43,6 +43,8 @@ class FortifyServiceProvider extends ServiceProvider
             'token' => $request->route('token'),
         ]));
         Fortify::verifyEmailView(fn() => view('auth.verify-email'));
+        Fortify::twoFactorChallengeView(fn() => view('auth.two-factor-challenge'));
+        Fortify::confirmPasswordView(fn() => view('auth.confirm-password'));
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
