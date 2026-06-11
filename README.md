@@ -39,6 +39,18 @@ A minimal, ready-to-use authentication starter for Laravel 13 using Fortify, Liv
 
 ---
 
+## Installation
+
+```bash
+composer create-project crazypanter28/laravel13-auth-starter my-project
+cd my-project
+php artisan auth:install
+npm run build
+php artisan serve
+```
+---
+
+
 ## Getting started
 
 ```bash
