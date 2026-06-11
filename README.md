@@ -11,24 +11,23 @@ A minimal, ready-to-use authentication starter for Laravel 13 using Fortify, Liv
 - Laravel 13
 - Laravel Fortify
 - Livewire 3
-- Tailwind CSS 4
+- Tailwind CSS 4 (default)
+- Bootstrap 5 (optional via wizard)
+- Laravel Socialite (optional via wizard)
+- Spatie Laravel Permission (optional via wizard)
 - SQLite (default) — MySQL/PostgreSQL also supported
 
 ---
 
-## What's included (v0.0.1)
+## What's included
 
-- Login
-- Registration
-- Forgot password
-- Reset password
-- Email verification
-
-## What's NOT included (yet)
-
-- OAuth / Social login → v0.2
-- Two-factor authentication → v0.3
-- Role & permissions → v0.4
+| Feature | Version |
+|---------|---------|
+| Login, Registration, Forgot/Reset password | v0.0.1 |
+| OAuth — GitHub and Google | v0.2.0 |
+| CSS framework selector (Tailwind, Bootstrap, None) | v0.3.0 |
+| Two-Factor Authentication (TOTP) | v0.4.0 |
+| Roles & Permissions (Spatie) | v0.5.0 |
 
 ---
 
@@ -50,26 +49,14 @@ composer install
 npm install
 php artisan key:generate
 php artisan migrate
-npm run dev
+php artisan auth:install
+npm run build
+php artisan serve
 ```
 
 Open http://localhost:8000 in your browser.
 
 ---
-## Choose your CSS framework
-
-After cloning, run the install command and choose your preferred framework:
-
-```bash
-php artisan auth:install
-```
-
-Options:
-- **Tailwind CSS** — default, included out of the box
-- **Bootstrap** — installs Bootstrap 5 automatically
-- **None** — plain HTML, bring your own styles
-
-You can switch frameworks anytime by running the command again.
 
 ## Wizard installer
 
@@ -84,8 +71,25 @@ It will ask you:
 1. **CSS framework** — Tailwind CSS, Bootstrap, or None
 2. **OAuth** — Enable GitHub and Google login
 3. **2FA** — Enable Two-Factor Authentication (TOTP)
+4. **Roles & Permissions** — Enable Spatie roles (admin, user)
 
 Everything is configured automatically based on your choices.
+
+---
+
+## OAuth local development note
+
+Google OAuth does not accept `.test` domains. For local testing use:
+
+```env
+GOOGLE_REDIRECT_URI=http://127.0.0.1:80/auth/google/callback
+```
+
+Or use [ngrok](https://ngrok.com) to expose your local app with a public domain.
+
+GitHub OAuth works fine with `.test` domains.
+
+---
 
 ## Switching to MySQL
 
@@ -110,6 +114,7 @@ Then run:
 
 ```bash
 php artisan migrate:fresh
+php artisan db:seed --class=RolesAndPermissionsSeeder
 ```
 
 ---
@@ -131,6 +136,8 @@ storage/logs/laravel.log
 Search for `reset-password` — copy the full URL and paste it in your browser.
 
 For production change `MAIL_MAILER` to `smtp`, `mailgun`, `ses`, or any driver Laravel supports.
+
+---
 
 ## Contributing
 

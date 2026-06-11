@@ -6,6 +6,22 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.5.0] - 2026-06-11
+
+### Added
+- Roles & Permissions via Spatie Laravel Permission
+- `RolesAndPermissionsSeeder` with `admin` and `user` roles
+- Auto-assign `user` role on registration
+- Dashboard shows current user role
+- Wizard installer now asks if Roles & Permissions should be enabled
+- `HasRoles` trait added to User model automatically by installer
+
+### Notes
+- Roles are optional — disabled by default in wizard
+- Admin role has all permissions, user role has `view dashboard` only
+
+---
+
 ## [v0.4.0] - 2026-06-08
 
 ### Added
