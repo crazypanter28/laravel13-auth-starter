@@ -30,6 +30,9 @@ class InstallAuthCommand extends Command
         // Paso 3 — 2FA
         $twoFactor = $this->confirm('3. Do you want to enable Two-Factor Authentication (2FA)?', true);
 
+        // Paso 4 — Roles y permisos
+        $roles = $this->confirm('4. Do you want to enable Roles & Permissions (Spatie)?', true);
+
         $this->info('');
         $this->info('Installing...');
         $this->info('');
@@ -47,6 +50,9 @@ class InstallAuthCommand extends Command
         // Configurar 2FA
         $this->configureTwoFactor($twoFactor);
 
+        // Configurar roles y permisos
+        $this->configureRoles($roles);
+
         // Actualizar .env.example
         $this->updateEnvExample($oauth);
 
@@ -59,6 +65,8 @@ class InstallAuthCommand extends Command
         $this->line('  CSS Framework : ' . $framework);
         $this->line('  OAuth         : ' . ($oauth ? 'enabled' : 'disabled'));
         $this->line('  2FA           : ' . ($twoFactor ? 'enabled' : 'disabled'));
+        $this->line('  Roles & Permissions : ' . ($roles ? 'enabled' : 'disabled'));
+
         $this->info('');
         $this->warn('⚠  Run to apply styles:');
         $this->line('     npm run build');
@@ -186,5 +194,35 @@ class InstallAuthCommand extends Command
             base_path("stubs/auth/{$framework}/layouts/guest.blade.php"),
             resource_path('views/components/layouts/guest.blade.php')
         );
+    }
+
+    private function configureRoles(bool $enabled): void
+    {
+        if ($enabled) {
+            // Verificar si HasRoles ya está en el modelo
+            $modelPath = app_path('Models/User.php');
+            $content = File::get($modelPath);
+
+            if (!str_contains($content, 'HasRoles')) {
+                $content = str_replace(
+                    'use HasFactory, Notifiable, TwoFactorAuthenticatable;',
+                    'use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;',
+                    $content
+                );
+                $content = str_replace(
+                    'use Laravel\Fortify\TwoFactorAuthenticatable;',
+                    "use Laravel\Fortify\TwoFactorAuthenticatable;\nuse Spatie\Permission\Traits\HasRoles;",
+                    $content
+                );
+                File::put($modelPath, $content);
+            }
+
+            // Correr seeder
+            $this->line('  Running roles seeder...');
+            exec('php artisan db:seed --class=RolesAndPermissionsSeeder');
+            $this->line('  ✓ Roles & Permissions enabled (admin, user)');
+        } else {
+            $this->line('  ✓ Roles & Permissions skipped');
+        }
     }
 }
