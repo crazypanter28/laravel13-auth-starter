@@ -41,10 +41,10 @@ return [
         Features::resetPasswords(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
-        ]),
+        // Features::twoFactorAuthentication([
+        //     'confirm' => true,
+        //     'confirmPassword' => true,
+        // ]),
         Features::passkeys([
             'confirmPassword' => true,
         ]),

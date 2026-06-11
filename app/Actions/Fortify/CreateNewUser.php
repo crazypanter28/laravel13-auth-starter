@@ -34,10 +34,20 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
+        $user = User::create([
+            'name'     => $input['name'],
+            'email'    => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        // Asignar rol user por defecto si Spatie está instalado
+        if (class_exists(\Spatie\Permission\Models\Role::class)) {
+            $role = \Spatie\Permission\Models\Role::findByName('user', 'web');
+            if ($role) {
+                $user->assignRole($role);
+            }
+        }
+
+        return $user;
     }
 }

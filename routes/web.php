@@ -11,10 +11,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 });
-
-// OAuth Socialite
-Route::get('/auth/{provider}/redirect', [App\Http\Controllers\Auth\SocialiteController::class, 'redirect'])
-    ->name('socialite.redirect');
-
-Route::get('/auth/{provider}/callback', [App\Http\Controllers\Auth\SocialiteController::class, 'callback'])
-    ->name('socialite.callback');

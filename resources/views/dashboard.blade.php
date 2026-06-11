@@ -24,6 +24,23 @@
             </form>
         </div>
 
+        {{-- Rol del usuario --}}
+        @if (class_exists(\Spatie\Permission\Models\Role::class) && auth()->user()->roles->count() > 0)
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-1">
+                    Tu rol
+                </h2>
+                <div class="flex gap-2 mt-3">
+                    @foreach (auth()->user()->roles as $role)
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                            {{ $role->name === 'admin' ? 'bg-indigo-100 text-indigo-800' : 'bg-gray-100 text-gray-800' }}">
+                            {{ $role->name }}
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::twoFactorAuthentication()))
             {{-- Two Factor Auth --}}
             <div class="bg-white rounded-lg shadow-sm p-6">
