@@ -1,9 +1,21 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "crazypanter28/laravel13-auth-starter",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Authentication starter for Laravel 13 — Fortify + Livewire + Tailwind/Bootstrap + OAuth + 2FA + Roles & Permissions",
+    "keywords": [
+        "laravel",
+        "laravel13",
+        "authentication",
+        "fortify",
+        "livewire",
+        "tailwind",
+        "bootstrap",
+        "oauth",
+        "2fa",
+        "spatie",
+        "starter-kit"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.3",
