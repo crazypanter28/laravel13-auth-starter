@@ -6,6 +6,15 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [v0.6.0] - 2026-06-11
+
+### Added
+- Feature tests for auth flow — 10 tests, 17 assertions
+- Login, register, forgot password, logout and dashboard tests
+- Auto-create `user` role in test environment when Spatie is enabled
+
+---
+
 ## [v0.5.0] - 2026-06-11
 
 ### Added
